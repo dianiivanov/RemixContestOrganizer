@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head('Contest Application Form')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div class="container">
+    <h3 th:text="${title}">Contest Application</h3>
+        <div th:object="${contestApplication}">
+            <span th:text="#{lbl.owner}">Owner</span>
+            <div>
+                <a th:text="*{owner.artistName}"
+                   th:href="@{|/profile/*{owner.id}|}"></a>
+            </div>
+            <span th:text="#{lbl.phoneNumber}">Owner</span>
+            <div th:text="*{phoneNumber}"/>
+            <span th:text="#{lbl.recordLabel}">Record Label</span>
+            <div th:text="*{recordLabel}"/>
+            <span th:text="#{lbl.website}">Website</span>
+            <div th:text="*{website}"/>
+            <span th:text="#{lbl.songLink}">Song</span>
+            <div th:text="*{songLink}"/>
+            <span th:text="#{lbl.promotionInfo}">Promotion Info</span>
+            <div th:text="*{promotionInfo}"/>
+            <span th:text="#{lbl.primaryGoal}">Primary Goal</span>
+            <div th:text="*{primaryGoal}"/>
+            <span th:text="#{lbl.remixesDesired}">Remixes Desired</span>
+            <div th:text="*{remixesDesired}"/>
+            <span th:text="#{lbl.ownsCopyright}">Owns Copyright</span>
+            <div th:text="*{ownsCopyright}"/>
+            <span th:text="#{lbl.investment}">Investment</span>
+            <div th:text="*{investment}"/>
+            <span th:text="#{lbl.investInMarketing}">Invest in Marketing</span>
+            <div th:text="*{investInMarketing}"/>
+            <span th:text="#{lbl.status}">Status</span>
+            <div th:text="*{status}"/>
+            <a th:if="*{contest == null}" th:href="@{/contest-applications/form(mode=edit,contestApplicationId=${contestApplication.id})}">EDIT</a>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <a th:if="*{status == T(com.organizer.contest.remix.enums.ApplicationStatus).APPROVED and contest == null}"
+                   th:href="@{/contests/form(contestApplicationId=${contestApplication.id})}">Create Contest</a>
+                <a th:if="*{contest != null}"
+                   th:href="@{/contests/{contestId}(contestId=*{contest.id})}">Associated Contest</a>
+                <form th:if="*{contest == null and (status == T(com.organizer.contest.remix.enums.ApplicationStatus).NEW or status == T(com.organizer.contest.remix.enums.ApplicationStatus).REJECTED)}"
+                      action="#" th:action="@{/contest-applications/{id}/approve(id=${contestApplication.id})}" method="POST">
+                    <input type="submit" value="Approve">
+                </form>
+                <form th:if="*{contest == null and (status == T(com.organizer.contest.remix.enums.ApplicationStatus).NEW or status == T(com.organizer.contest.remix.enums.ApplicationStatus).APPROVED)}"
+                      action="#" th:action="@{/contest-applications/{id}/reject(id=${contestApplication.id})}" method="POST">
+                    <input type="submit" value="Reject">
+                </form>
+            </div>
+        </div>
+    <div  th:replace="fragments/foot :: foot" />
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Contests')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div>
+    <div th:replace="contests/contests-list :: contestsList(${contests}, 'My Contests')" />
+</div>
+
+<div th:replace="fragments/foot :: foot" />
+</body>
+</html>

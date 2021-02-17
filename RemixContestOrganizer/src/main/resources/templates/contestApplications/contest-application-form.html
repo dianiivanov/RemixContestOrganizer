@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments/head :: head('Contest Application Form')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div class="container">
+    <h3 th:text="${title}">Contest Application Form</h3>
+    <form th:object="${contestApplication}" method="post"
+          class="col-md-9 col-lg-6" enctype="multipart/form-data">
+
+        <div th:if="*{id} != null" class="form-group">
+            <div class="col-sm-10">
+                <input type="hidden" th:value="*{id}" id="id" name="id"
+                       class="form-control" title="Recipe Id" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label path="phoneNumber" class="col-sm-10">Phone Number</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{phoneNumber}" id="phoneNumber" name="phoneNumber"
+                       class="form-control" title="Phone Number" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            length must be between 3 and 30
+        </p>
+
+        <div class="form-group">
+            <label path="recordLabel" class="col-sm-10">Record Label</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{recordLabel}" id="recordLabel" name="recordLabel"
+                       class="form-control" title="Record Label" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('recordLabel')}" th:errors="*{recordLabel}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            this field should not be empty
+        </p>
+
+        <div class="form-group">
+            <label path="website" class="col-sm-10">Website</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{website}" id="website" name="website"
+                       class="form-control" title="Website" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('website')}" th:errors="*{website}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Password should not be blank and should have at least 8 characters.
+        </p>
+
+        <div class="form-group">
+            <label path="songLink" class="col-sm-10">Song Link</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{songLink}" id="songLink" name="songLink"
+                       class="form-control" title="Song Link" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('songLink')}" th:errors="*{songLink}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div class="form-group">
+            <label path="promotionInfo" class="col-sm-10">How do you currently promote your music and drive engagement?</label>
+            <div class="col-sm-10">
+                <textarea type="text" th:value="*{promotionInfo}" th:field="*{promotionInfo}" id="promotionInfo" name="promotionInfo"
+                          class="form-control" title="Promotion Info" th:errorclass="field-error"></textarea>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('promotionInfo')}" th:errors="*{promotionInfo}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div class="form-group">
+            <label path="primaryGoal" class="col-sm-10">What is the primary goal of this campaign?</label>
+            <div class="col-sm-10">
+                <textarea type="text" th:value="*{primaryGoal}" th:field="*{primaryGoal}" id="primaryGoal" name="primaryGoal"
+                          class="form-control" title="Primary Goal" th:errorclass="field-error"></textarea>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('primaryGoal')}" th:errors="*{primaryGoal}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div class="form-group">
+            <label path="remixesDesired" class="col-sm-10">Ideally, how many remixes would you like?</label>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input type="radio" th:field="*{remixesDesired}" value="100 - 250" id="remixesDesired1" name="remixesDesired1"
+                           class="form-check-input" title="Remixes Desired" th:errorclass="field-error">
+                    <label class="form-check-label">100 - 250</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" th:field="*{remixesDesired}" value="250 - 500" id="remixesDesired2" name="remixesDesired2"
+                           class="form-check-input" title="Remixes Desired" th:errorclass="field-error">
+                    <label class="form-check-label">250 - 500</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" th:field="*{remixesDesired}" value="500 - 1000" id="remixesDesired3" name="remixesDesired3"
+                           class="form-check-input" title="Remixes Desired" th:errorclass="field-error">
+                    <label class="form-check-label">500 - 1000</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" th:field="*{remixesDesired}" value="1000 +" id="remixesDesired4" name="remixesDesired4"
+                           class="form-check-input" title="Remixes Desired" th:errorclass="field-error">
+                    <label class="form-check-label">1000 +</label>
+                </div>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('remixesDesired')}" th:errors="*{remixesDesired}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div class="form-group">
+            <label path="ownsCopyright" class="col-sm-10">Do you own the master recording or represent the copyright owner(s)?</label>
+            <div class="col-sm-10">
+                <label class="radio-inline">
+                    Yes
+                    <input type="radio" th:field="*{ownsCopyright}" th:value="true" id="ownsCopyrightTrue" name="ownsCopyrightTrue"
+                           class="form-control" title="Investment In Marketing" th:errorclass="field-error">
+                </label>
+                <label class="radio-inline">
+                    No
+                    <input type="radio" th:field="*{ownsCopyright}" th:value="false" id="ownsCopyrightFalse" name="ownsCopyrightFalse"
+                          class="form-control" title="Investment In Marketing" th:errorclass="field-error">
+                </label>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('ownsCopyright')}" th:errors="*{ownsCopyright}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div class="form-group">
+            <label path="investment" class="col-sm-10">How much are you able to invest into this campaign?</label>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input type="radio" th:field="*{investment}" value="Under $1000" id="investment1" name="investment1"
+                           class="form-check-input" title="Investment" th:errorclass="field-error">
+                    <label class="form-check-label">Under $1000</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" th:field="*{investment}" value="$1,000 - $3,000" id="investment2" name="investment2"
+                           class="form-check-input" title="Investment" th:errorclass="field-error">
+                    <label class="form-check-label">$1,000 - $3,000</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" th:field="*{investment}" value="$3,000 - $5,000" id="investment3" name="investment3"
+                           class="form-check-input" title="Investment" th:errorclass="field-error">
+                    <label class="form-check-label">$3,000 - $5,000</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" th:field="*{investment}" value="$5,000 - $10,000" id="investment4" name="investment4"
+                           class="form-check-input" title="Investment" th:errorclass="field-error">
+                    <label class="form-check-label">$5,000 - $10,000</label>
+                </div>
+            </div>
+        <p th:if="${#fields.hasErrors('investment')}" th:errors="*{investment}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div class="form-group">
+            <label path="investInMarketing" class="col-sm-10">With the right team in place, are you in a position to invest in your marketing?</label>
+            <div class="col-sm-10">
+                <label class="radio-inline">
+                    Yes
+                    <input type="radio" th:field="*{investInMarketing}" th:value="true" id="investInMarketingTrue" name="investInMarketingTrue"
+                           class="form-control" title="Investment In Marketing" th:errorclass="field-error">
+                </label>
+                <label class="radio-inline">
+                    No
+                    <input type="radio" th:field="*{investInMarketing}" th:value="false" id="investInMarketingFalse" name="investInMarketingFalse"
+                           class="form-control" title="Investment In Marketing" th:errorclass="field-error">
+                </label>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('investInMarketing')}" th:errors="*{investInMarketing}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            Content should not be blank.
+        </p>
+
+<!--        <input type="hidden" th:value="*{imageUrl}" id="imageUrl" name="imageUrl" title="User image URL">-->
+<!--        <input type="hidden" th:value="*{created}" id="created" name="created" title="User creation date and time">-->
+<!--        <input type="hidden" th:value="*{modified}" id="modified" name="modified" title="User last modification date and timeL">-->
+
+        <div class="form-group">
+            <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
+                <button type="reset" class="btn btn-danger">Reset</button>
+            </div>
+        </div>
+
+        <div class="col-xs-12 alert alert-danger" th:if="${myErrors != null}">
+            <p>Validation errors: </p>
+            <ul th:each="error: ${myErrors}">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
+    </form>
+    <div  th:replace="fragments/foot :: foot" />
+</div>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments/head :: head('Contest Form')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div class="container">
+    <h3 th:text="${title}">Contest Form</h3>
+    <form th:object="${contest}" method="post"
+          th:action="@{/contests/form(contestApplicationId=${contestApplicationId})}"
+          class="col-md-9 col-lg-6" enctype="multipart/form-data">
+
+        <div th:if="*{id} != null" class="form-group">
+            <div class="col-sm-10">
+                <input type="hidden" th:value="*{id}" id="id" name="id"
+                       class="form-control" title="Recipe Id" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-10">Title example:(Artist Name - Song Name)</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{title}" id="title" name="title"
+                       class="form-control" title="Title" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            must not be blank
+        </p>
+
+        <div class="form-group">
+            <label class="col-sm-10">Details</label>
+            <div class="col-sm-10">
+                <textarea type="text" th:value="*{details}" th:field="*{details}" id="details" name="details"
+                          class="form-control" title="Details" th:errorclass="field-error"></textarea>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('details')}" th:errors="*{details}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            must not be blank
+        </p>
+
+        <div class="form-group">
+            <label class="col-sm-10">Rules</label>
+            <div class="col-sm-10">
+                <textarea type="text" th:value="*{rules}" th:field="*{rules}" id="rules" name="rules"
+                          class="form-control" title="Rules" th:errorclass="field-error"></textarea>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('rules')}" th:errors="*{rules}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            must not be blank
+        </p>
+
+        <div class="form-group">
+            <label class="col-sm-10">Prizes</label>
+            <div class="col-sm-10">
+                <textarea type="text" th:value="*{prizes}" th:field="*{prizes}" id="prizes" name="prizes"
+                          class="form-control" title="Prizes" th:errorclass="field-error"></textarea>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('prizes')}" th:errors="*{prizes}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+            must not be blank
+        </p>
+
+        <div class="form-group">
+            <label class="col-sm-10">Cover Image (jpg/png file)</label>
+            <div class="col-sm-10">
+                <a href="#"  data-toggle="modal" data-target="#exampleModal"
+                   th:data-image-url="@{*{coverImageUrl}}">
+                    <img class="img-thumbnail" th:if="*{coverImageUrl != null}"
+                         th:src="@{'/uploads/' + *{coverImageUrl}}">
+                </a>
+                <div class="custom-file">
+                    <input type="file" id="imageFile" name="imageFile" class="custom-file-input">
+                    <label class="custom-file-label" for="imageFile">Choose image file</label>
+                </div>
+            </div>
+        </div>
+        <p th:if="${imageFileError != null}" class="errors alert alert-danger offset-sm-2 col-sm-10">
+            <span th:text="${imageFileError}"></span>
+        </p>
+
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label">Stems(Archived file)</label>
+            <div class="col-sm-10">
+                <div class="custom-file">
+                    <input type="file" id="stemsFile" name="stemsFile" class="custom-file-input">
+                    <label th:text="${'Choose stems file'}" class="custom-file-label" for="stemsFile">Choose file</label>
+                </div>
+            </div>
+        </div>
+        <p th:if="${stemsFileError != null}" class="errors alert alert-danger offset-sm-2 col-sm-10">
+            <span th:text="${stemsFileError}"></span>
+        </p>
+
+        <div class="form-group">
+            <label path="status" class="col-sm-10">Status</label>
+            <div class="col-sm-10">
+                <select class="form-control" th:field="*{status}" id="status">
+                    <option th:each="value : ${T(com.organizer.contest.remix.enums.ContestStatus).values()}"
+                            th:value="${value}"
+                            th:text="${value}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('status')}" th:errors="*{status}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+        </p>
+<!--     TODOOOO   <p th:if="${fileError != null}" class="errors alert alert-danger offset-sm-2 col-sm-10">-->
+<!--            <span th:text="${fileError}"></span>-->
+<!--        </p>-->
+            <!--        <input type="hidden" th:value="*{imageUrl}" id="imageUrl" name="imageUrl" title="User image URL">-->
+            <!--        <input type="hidden" th:value="*{created}" id="created" name="created" title="User creation date and time">-->
+            <!--        <input type="hidden" th:value="*{modified}" id="modified" name="modified" title="User last modification date and timeL">-->
+
+            <div class="form-group">
+                <div class="offset-sm-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                </div>
+            </div>
+
+            <div class="col-xs-12 alert alert-danger" th:if="${myErrors != null}">
+                <p>Validation errors: </p>
+                <ul th:each="error: ${myErrors}">
+                    <li th:text="${error}"></li>
+                </ul>
+            </div>
+    </form>
+    <div  th:replace="fragments/foot :: foot" />
+</div>
+
+</body>
+</html>

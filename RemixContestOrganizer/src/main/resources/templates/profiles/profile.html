@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head('Contest Application Form')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div class="container">
+    <h3 th:text="${title}">Profile</h3>
+    <a th:if="${isAllowed}" th:href="@{/profile/contests}">My contests</a>
+    <a th:if="${isAllowed}" th:href="@{/profile/contest-applications}">My contest applications</a>
+    <div th:object="${userProfileDTO}">
+        <span th:text="#{lbl.artistName}">Artist Name</span>
+        <div th:text="${artistName}"/>
+        <div>
+            <a href="#"  data-toggle="modal" data-target="#exampleModal"
+               th:data-image-url="@{*{imageUrl}}">
+                <img class="img-thumbnail" th:if="*{imageUrl != null}"
+                     th:src="@{'/uploads/' + *{imageUrl}}">
+            </a>
+        </div>
+        <span th:text="#{lbl.email}">Email</span>
+        <div th:text="*{email}"/>
+        <span th:text="#{lbl.biography}">Biography</span>
+        <div th:text="*{biography}"/>
+        <a th:if="${isAllowed}" th:href="@{/profile/edit}">EDIT</a>
+        <div th:replace="submissions/submissions-list :: submissionsList(${submissions}, ${isAllowed})" />
+    </div>
+    <div  th:replace="fragments/foot :: foot" />
+</div>
+</body>
+</html>

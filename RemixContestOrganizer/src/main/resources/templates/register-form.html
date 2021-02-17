@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head('Add User')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})"/>
+<div class="container">
+    <h3 th:text="${title}">Add New User</h3>
+    <form th:object="${userDTO}" method="post"
+          class="form-horizontal col-md-9 col-lg-6" enctype="multipart/form-data">
+
+        <div th:if="*{id} != null" class="form-group row">
+            <label path="id" class="col-sm-10">ID</label>
+            <div class="col-sm-10">
+                <input type="hidden" th:value="*{id}" id="id" name="id"
+                       class="form-control" title="Recipe Id" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label path="username" class="col-sm-10">Username</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{username}" id="username" name="username"
+                       class="form-control" title="Username" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+           class="errors alert alert-danger col-sm-10">
+            length must be between 3 and 30
+        </p>
+        <p th:if="${usernameError != null}" class="errors alert alert-danger col-sm-10">
+            <span th:text="${usernameError}"></span>
+        </p>
+
+
+        <div class="form-group row">
+            <label path="password" class="col-sm-10">Password</label>
+            <div class="col-sm-10">
+                <input type="password" th:value="*{password}" id="password" name="password"
+                       class="form-control" title="Password" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+           class="errors alert alert-danger col-sm-10">
+            Password should not be blank and should have at least 8 characters.
+        </p>
+        <p th:if="${pwdError != null}" class="errors alert alert-danger col-sm-10">
+            <span th:text="${pwdError}"></span>
+        </p>
+
+
+        <div class="form-group row">
+            <label path="name" class="col-sm-10">Artist name</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{artistName}" id="artistName" name="artistName"
+                       class="form-control" title="Artist name" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('artistName')}" th:errors="*{artistName}"
+           class="errors alert alert-danger col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div class="form-group row">
+            <label path="email" class="col-sm-10">Email</label>
+            <div class="col-sm-10">
+                <input type="text" th:value="*{email}" id="email" name="email"
+                       class="form-control" title="User email" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+           class="errors alert alert-danger col-sm-10">
+            Content should not be blank.
+        </p>
+        <p th:if="${emailError != null}" class="errors alert alert-danger col-sm-10">
+            <span th:text="${emailError}"></span>
+        </p>
+
+        <div class="form-group row">
+            <label path="biography" class="col-sm-10">Biography</label>
+            <div class="col-sm-10">
+                <textarea type="text" th:value="*{biography}" id="biography" name="biography"
+                          class="form-control" title="User biography" th:errorclass="field-error"></textarea>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('biography')}" th:errors="*{biography}"
+           class="errors alert alert-danger col-sm-10">
+            Content should not be blank.
+        </p>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')" class="form-group">
+            <label path="role" class="col-sm-10">
+                Role
+            </label>
+            <div th:each="val : ${T(com.organizer.contest.remix.enums.Role).values()}">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" th:field="*{role}" th:value="${val}" class="custom-control-input">
+                    <label class="custom-control-label" th:for="${#ids.prev('role')}" th:text="${val}">val</label>
+                </div>
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}"
+           class="errors alert alert-danger col-sm-10">
+            Gender should not be blank
+        </p>
+
+        <div class="form-group row">
+            <label class="col-sm-10">Picture</label>
+            <div class="col-sm-10">
+                <div class="custom-file">
+                    <input type="file" id="file" name="file" class="custom-file-input" th:value="*{imageUrl}">
+                    <label th:text="${#strings.isEmpty(userDTO.imageUrl)}? 'Choose file' : *{imageUrl}" class="custom-file-label" for="file">Choose image file</label>
+                </div>
+            </div>
+        </div>
+        <p th:if="${imageFileError != null}" class="errors alert alert-danger col-sm-10">
+            <span th:text="${imageFileError}"></span>
+        </p>
+
+        <div class="form-group row">
+            <div class= "col-sm-10">
+                <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
+                <a th:href="${'/users'}" class="btn btn-secondary" id="cancel">Cancel</a>
+            </div>
+        </div>
+
+        <div class="col-xs-12 alert alert-danger" th:if="${myErrors != null}">
+            <p>Validation errors: </p>
+            <ul th:each="error: ${myErrors}">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
+    </form>
+    <div  th:replace="fragments/foot :: foot" />
+</div>
+
+</body>
+</html>

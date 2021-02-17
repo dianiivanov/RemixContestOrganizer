@@ -1,54 +1,45 @@
 package com.organizer.contest.remix.models;
 
-import com.sun.istack.NotNull;
+import com.organizer.contest.remix.enums.ApplicationStatus;
+import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 public class ContestApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Size(min = 2, max = 50)
-    private String names;
-
-    @NotNull
-    @Email
-    private String email;
-
-    @NotNull
+    @NotBlank
     private String phoneNumber;
 
-    @NotNull
+    @NotBlank
     private String recordLabel;
 
-    @NotNull
     @URL
     private String website;
 
-    @NotNull
-    private String artistName;
-
-    @NotNull
+    @NotBlank
     @URL
     private String songLink;
 
-    @NotNull
+    @NotBlank
     private String promotionInfo;
 
-    @NotNull
+    @NotBlank
     private String primaryGoal;
 
-    @NotNull
-    private Long remixesDesired;
+    @NotBlank
+    private String remixesDesired;
 
     @NotNull
     private Boolean ownsCopyright;
@@ -58,6 +49,11 @@ public class ContestApplication {
 
     @NotNull
     private Boolean investInMarketing;
+
+    private ApplicationStatus status = ApplicationStatus.NEW;
+
+    @OneToOne(mappedBy = "contestApplication")
+    private Contest contest;
 
     @ManyToOne
     User owner;

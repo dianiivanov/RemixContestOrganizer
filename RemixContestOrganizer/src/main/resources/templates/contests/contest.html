@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head('Contest Application Form')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div class="container">
+    <h3 th:text="${title}">Contest</h3>
+        <div th:object="${contest}">
+            <div>
+                <a th:if="${editableByCurrentUser}"
+                   th:href="@{/contests/form(mode=edit,contestId=${id},contestApplicationId=*{contestApplication.id})}">
+                    EDIT
+                </a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/downloadFile/{fileId}(fileId=*{stems.id})}">Download Stems</a>
+                <a th:if="${submissionId == null and contest.status == T(com.organizer.contest.remix.enums.ContestStatus).RUNNING}"
+                   sec:authorize="isAuthenticated()"
+                   th:href="@{/submissions/form(contestId=*{id})}">Add Submission</a>
+                <a th:if="${submissionId != null}"
+                   sec:authorize="isAuthenticated()"
+                   th:href="@{/submissions/form(mode='edit', submissionId=${submissionId}, contestId=*{id})}">Edit your Submission</a>
+            </div>
+            <span th:text="#{lbl.artistName}">Artist Name</span>
+            <div>
+                <a th:text="*{owner.artistName}"
+                   th:href="@{|/profile/*{owner.id}|}"></a>
+            </div>
+            <span th:text="#{lbl.details}">Details</span>
+            <div th:text="*{details}"/>
+            <span th:text="#{lbl.rules}">Rules</span>
+            <div th:text="*{rules}"/>
+            <span th:text="#{lbl.prizes}">Prizes</span>
+            <div th:text="*{prizes}"/>
+            <div>
+                <a href="#"  data-toggle="modal" data-target="#exampleModal"
+                   th:data-image-url="@{*{coverImageUrl}}">
+                    <img class="img-thumbnail" th:if="*{coverImageUrl != null}"
+                         th:src="@{'/uploads/' + *{coverImageUrl}}">
+                </a>
+            </div>
+            <div th:replace="submissions/submissions-list :: submissionsList(*{submissions},${editableByCurrentUser})" />
+        </div>
+    <div  th:replace="fragments/foot :: foot" />
+</div>
+</body>
+</html>

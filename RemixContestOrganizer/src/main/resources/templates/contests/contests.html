@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Contests')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div>
+    <div th:if="${newContests != null}">
+        <div th:replace="contests/contests-list :: contestsList(${newContests}, 'New Contests')"/>
+    </div>
+    <div th:replace="contests/contests-list :: contestsList(${runningContests}, 'Running Contests')" />
+    <div th:replace="contests/contests-list :: contestsList(${judgingContests}, 'Judging Contests')" />
+    <div th:replace="contests/contests-list :: contestsList(${closedContests}, 'Closed Contests')" />
+</div>
+
+<div th:replace="fragments/foot :: foot" />
+</body>
+</html>

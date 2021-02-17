@@ -1,7 +1,7 @@
 package com.organizer.contest.remix.models;
 
 import com.organizer.contest.remix.enums.Genre;
-import com.organizer.contest.remix.enums.Key;
+import com.organizer.contest.remix.enums.Tonality;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,25 +15,31 @@ import java.time.LocalDateTime;
 public class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ids;
+    private Long id;
+
+    private String title;
 
     private Integer tempo;
 
-//    @Enumerated(EnumType.STRING)
-//    private Key key;
-//
-//    @Enumerated(EnumType.STRING)
-//    private Genre genre;
+    @Enumerated(EnumType.STRING)
+    private Tonality tonality;
+
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
 
     private String description;
 
-    private String coverImage;
+    private String coverImageUrl;
+
+    private String audioFileUrl;
 
     @ManyToOne
     private Contest contest;
 
     @ManyToOne
     private User owner;
+
+    Long placeInContest;
 
     @NotNull
     @PastOrPresent

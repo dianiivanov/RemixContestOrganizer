@@ -1,15 +1,17 @@
 package com.organizer.contest.remix.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 
+import com.organizer.contest.remix.enums.ContestStatus;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,20 +20,39 @@ public class Contest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
+    private String title;
+
+    @NotBlank
+    @Column(length = 4096)
     private String details;
 
-    @NotNull
+    @NotBlank
+    @Column(length = 4096)
     private String rules;
 
-    @NotNull
+    @NotBlank
+    @Column(length = 4096)
     private String prizes;
 
+    private String coverImageUrl;
+
+    @Enumerated(EnumType.STRING)
+    private ContestStatus status;
+
+    @OneToOne
+    @JoinColumn(name = "contest_application_id", referencedColumnName = "id")
+    private ContestApplication contestApplication;
+
     @ManyToOne
-    User owner;
+    private User owner;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stems_id", referencedColumnName = "id")
+    private DBFile stems;
 
     @OneToMany(mappedBy = "contest",cascade = CascadeType.ALL)
-    private Set<Submission> submissions = new HashSet<>();
+    private List<Submission> submissions = new ArrayList<>();
 
     @NotNull
     @PastOrPresent

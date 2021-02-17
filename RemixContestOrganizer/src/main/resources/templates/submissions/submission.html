@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head('Contest Application Form')" />
+<body>
+<div th:replace="fragments/menu :: menu(${path})" />
+<div class="container">
+    <h3 th:text="${title}">Submission</h3>
+    <div th:object="${submission}">
+        <span th:text="#{lbl.artistName}">Artist Name</span>
+        <div>
+            <a th:text="*{owner.artistName}"
+               th:href="@{|/profile/*{owner.id}|}"></a>
+        </div>
+        <div>
+            <a href="#"  data-toggle="modal" data-target="#exampleModal"
+               th:data-image-url="@{*{owner.imageUrl}}">
+                <img class="img-thumbnail" th:if="*{owner.imageUrl != null}"
+                     th:src="@{'/uploads/' + *{owner.imageUrl}}">
+            </a>
+        </div>
+        <span th:text="#{lbl.genre}">Genre</span>
+        <div th:text="*{genre}"/>
+        <span th:text="#{lbl.tonality}">Tonality</span>
+        <div th:text="*{tonality}"/>
+        <span th:text="#{lbl.tempo}">Tempo</span>
+        <div th:text="*{tempo}"/>
+        <span th:text="#{lbl.description}">Description</span>
+        <div th:text="*{description}"/>
+        <div th:if="*{placeInContest != null}">
+            <span th:text="#{lbl.placeInContest}">Place in Contest</span>
+            <div th:text="*{placeInContest}"/>
+        </div>
+        <div>
+            <a href="#"  data-toggle="modal" data-target="#exampleModal"
+               th:data-image-url="@{*{coverImageUrl}}">
+                <img class="img-thumbnail" th:if="*{coverImageUrl != null}"
+                     th:src="@{'/uploads/' + *{coverImageUrl}}">
+            </a>
+        </div>
+        <audio controls controlsList="nodownload">
+            <source th:src="@{'/uploads/' + *{audioFileUrl}}">
+        </audio>
+        <div>
+            <a th:if="${editableByCurrentUser}" th:href="@{/submissions/form(mode=edit,contestId=${contestId},submissionId=*{id})}">EDIT</a>
+        </div>
+    </div>
+
+    <form th:if="${isAllowedToAnnounce}" th:object="${submission}" method="post"
+          th:action="@{/submissions/announce}"
+          class="col-md-9 col-lg-6" enctype="multipart/form-data">
+
+        <input type="hidden" th:value="*{id}" id="id" name="id"
+               class="form-control" title="Recipe Id" readonly>
+
+        <div class="form-group">
+            <label path="placeInContest" class="col-sm-10">Place in the contest</label>
+            <div class="col-sm-10">
+                <input type="number" min="0" step="1" th:value="*{placeInContest}" th:field="*{placeInContest}" id="placeInContest" name="placeInContest"
+                       class="form-control" title="placeInContest" th:errorclass="field-error">
+            </div>
+        </div>
+        <p th:if="${#fields.hasErrors('placeInContest')}" th:errors="*{placeInContest}"
+           class="errors alert alert-danger offset-sm-2 col-sm-10">
+        </p>
+
+        <div class="form-group">
+            <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
+            </div>
+        </div>
+
+    </form>
+    <div  th:replace="fragments/foot :: foot" />
+</div>
+</body>
+</html>
