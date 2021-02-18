@@ -75,7 +75,7 @@ public class RegisterController {
 
         if(multipartFileHandleUtil.isMultipartFileImage(file)) {
             multipartFileHandleUtil.handleMultipartFile(file, "/images/" + userDTO.getArtistName());
-            userDTO.setImageUrl("/images/" + userDTO.getArtistName() + file.getOriginalFilename());
+            userDTO.setImageUrl("images/" + userDTO.getArtistName()+"/" + file.getOriginalFilename());
         }
 
         User user = getAndPopulateUser(userDTO);
